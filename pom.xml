@@ -14,6 +14,9 @@
     <artifactId>cosmocode-issuetracker-activecollab</artifactId>
     <version>0.1-SNAPSHOT</version>
 
+    <scm>
+        <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-issuetracker-activecollab/trunk</developerConnection>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -30,6 +33,26 @@
             <artifactId>httpclient</artifactId>
             <version>4.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>de.cosmocode</groupId>
+            <artifactId>cosmocode-commons</artifactId>
+            <version>[0.13.2,2)</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>cosmocode-public</id>
+            <name>CosmoCode Public Maven Repository</name>
+            <url>http://mvn.cosmocode.de/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>cosmocode-public</id>
+            <name>CosmoCode Public Maven Repository</name>
+            <url>http://mvn.cosmocode.de/</url>
+        </pluginRepository>
+    </pluginRepositories>
     
 </project>

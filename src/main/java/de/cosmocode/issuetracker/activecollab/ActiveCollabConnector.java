@@ -16,13 +16,23 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
-import de.cosmocode.issuetracker.Issue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
 
 /**
+ * Based on:
+ * http://www.activecollab.com/docs/manuals/developers/api/tickets
+ *
  * @author Tobias Sarnowski
  */
-public interface ActiveCollabIssue extends Issue {
+public final class ActiveCollabConnector {
+    private static final Logger LOG = LoggerFactory.getLogger(ActiveCollabConnector.class);
 
-
+    public static ActiveCollab connectActiveCollab(URI uri, String user, String apiKey, int projectId) {
+        AC ac = new AC(uri, user, apiKey, projectId);
+        return ac;
+    }
 
 }
