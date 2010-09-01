@@ -16,8 +16,8 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
-import de.cosmocode.issuetracker.Issue;
 import de.cosmocode.issuetracker.IssueTracker;
+import de.cosmocode.issuetracker.IssueTrackerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +67,11 @@ final class ACIssue implements ActiveCollabIssue {
     @Override
     public void setDescription(String description) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void update() throws IssueTrackerException {
+        ac.updateIssue(this);
     }
 
     @Override

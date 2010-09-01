@@ -108,11 +108,11 @@ public interface ActiveCollab extends IssueTracker {
     Iterable<ActiveCollabIssue> listIssues() throws IssueTrackerException;
 
     /**
-     * We officially support ActiveCollabIssues
+     * Lets you update a ticket, you have to use the result afterwards.
      *
+     * @param issue an ActiveCollabIssue
      * @return an ActiveCollabIssue
      * @throws IssueTrackerException if something goes wrong
      */
-    @Override
-    ActiveCollabIssue updateIssue(Issue issue) throws IssueTrackerException;
+    ActiveCollabIssue updateIssue(ActiveCollabIssue issue) throws IssueTrackerException;
 }

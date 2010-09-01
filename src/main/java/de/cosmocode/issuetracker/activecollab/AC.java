@@ -114,8 +114,11 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
 
     @Override
     public ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException {
-        final String pathInfo = "";
+        final String pathInfo = "/projects/" + projectId + "/tickets/add";
+
         final Map<String,String> parameters = Maps.newHashMap();
+        parameters.put("ticket[name]", title);
+        parameters.put("ticket[body]", description);
 
         try {
             return parseTicket(requestPost(pathInfo, parameters));
@@ -131,23 +134,35 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
 
     @Override
     public Iterable<ActiveCollabIssue> listIssues() throws IssueTrackerException {
-        final String pathInfo = "";
-        final Map<String,String> parameters = Maps.newHashMap();
+        final String pathInfo = "/projects/" + projectId + "/tickets";
 
         try {
-            return parseTickets(requestPost(pathInfo, parameters));
+            return parseTickets(requestGet(pathInfo));
+        } catch (IOException e) {
+            throw new StoringIssueFailed(e);
+        }
+    }
+
+    public ActiveCollabIssue updateIssue(ActiveCollabIssue issue) throws IssueTrackerException {
+        final String pathInfo = "/projects/" + projectId + "/tickets/" + issue.getId() + "/edit";
+
+        final Map<String,String> parameters = Maps.newHashMap();
+        parameters.put("ticket[name]", issue.getTitle());
+        parameters.put("ticket[body]", issue.getDescription());
+
+        try {
+            return parseTicket(requestPost(pathInfo, parameters));
         } catch (IOException e) {
             throw new StoringIssueFailed(e);
         }
     }
 
     @Override
-    public ActiveCollabIssue updateIssue(Issue issue) throws IssueTrackerException {
-        final String pathInfo = "";
-        final Map<String,String> parameters = Maps.newHashMap();
+    public ActiveCollabIssue getIssue(String issueId) throws IssueTrackerException {
+        final String pathInfo = "/projects/" + projectId + "/tickets/" + issueId;
 
         try {
-            return parseTicket(requestPost(pathInfo, parameters));
+            return parseTicket(requestGet(pathInfo));
         } catch (IOException e) {
             throw new StoringIssueFailed(e);
         }
