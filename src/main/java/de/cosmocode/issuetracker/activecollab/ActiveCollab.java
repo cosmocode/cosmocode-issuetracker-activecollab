@@ -33,7 +33,7 @@ public interface ActiveCollab extends IssueTracker {
     /**
      * Symbolizes that an ID is not set
      */
-    public static final int NO_ID = -1;
+    public static final int NOT_SET = -1;
 
 
     /**
@@ -53,7 +53,7 @@ public interface ActiveCollab extends IssueTracker {
     /**
      * The ticket's milestone. Used to create tickets in.
      *
-     * @return the project's milestone ID or {@link ActiveCollab#NO_ID}
+     * @return the project's milestone ID or {@link ActiveCollab#NOT_SET}
      */
     int getMilestoneId();
 
@@ -68,7 +68,7 @@ public interface ActiveCollab extends IssueTracker {
      * The ticket's parent ID. Used to create tickets in.
      * Parent ID can be a category, ticket or task.
      *
-     * @return the project's parent ID or {@link ActiveCollab#NO_ID}
+     * @return the project's parent ID or {@link ActiveCollab#NOT_SET}
      */
     int getParentId();
 

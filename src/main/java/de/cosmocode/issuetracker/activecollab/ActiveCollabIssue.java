@@ -23,6 +23,40 @@ import de.cosmocode.issuetracker.Issue;
  */
 public interface ActiveCollabIssue extends Issue {
 
+    /**
+     *
+     * @return
+     */
+    int getVisibility();
 
+    /**
+     *
+     * @param visibility
+     */
+    void setVisibility(int visibility);
+
+    /**
+     *
+     * @return
+     */
+    int getMilestoneId();
+
+    /**
+     *
+     * @param milestoneId
+     */
+    void setMilestoneId(int milestoneId);
+
+    /**
+     *
+     * @return
+     */
+    int getParentId();
+
+    /**
+     *
+     * @param parentId
+     */
+    void setParentId(int parentId);
 
 }

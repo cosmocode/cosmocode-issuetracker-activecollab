@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,9 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     private final URI apiUri;
     private final String token;
     private final int projectId;
-    private int milestoneId = ActiveCollab.NO_ID;
-    private int parentId = ActiveCollab.NO_ID;
+    private int milestoneId = ActiveCollab.NOT_SET;
+    private int parentId = ActiveCollab.NOT_SET;
+    private int visibility = ActiveCollab.NOT_SET;
 
     private final HttpClient httpclient;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -112,6 +114,14 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         this.parentId = parentId;
     }
 
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
     @Override
     public ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException {
         final String pathInfo = "/projects/" + projectId + "/tickets/add";
@@ -119,6 +129,17 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         final Map<String,String> parameters = Maps.newHashMap();
         parameters.put("ticket[name]", title);
         parameters.put("ticket[body]", description);
+
+        if (visibility != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[visibility]", Integer.toString(visibility));
+        }
+        if (milestoneId != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[milestone_id]", Integer.toString(milestoneId));
+        }
+        if (parentId != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[parent_id]", Integer.toString(parentId));
+        }
+
 
         try {
             return parseTicket(requestPost(pathInfo, parameters));
@@ -213,12 +234,16 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
 
     private List<ActiveCollabIssue> parseTickets(JsonNode json) {
         List<ActiveCollabIssue> issues = Lists.newArrayList();
-        json.toString();
+
+        Iterator<JsonNode> nodes = json.getElements();
+        while (nodes.hasNext()) {
+            issues.add(new ACIssue(this, nodes.next()));
+        }
+
         return issues;
     }
 
     private ActiveCollabIssue parseTicket(JsonNode json) {
-        return null;
+        return new ACIssue(this, json);
     }
-
 }
