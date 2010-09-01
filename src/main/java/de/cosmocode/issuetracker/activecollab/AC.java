@@ -52,8 +52,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
 
     private final URI uri;
     private final URI apiUri;
-    private final String user;
-    private final String apiKey;
+    private final String token;
     private final int projectId;
     private int milestoneId = ActiveCollab.NO_ID;
     private int parentId = ActiveCollab.NO_ID;
@@ -61,10 +60,9 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     private final HttpClient httpclient;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    AC(URI uri, String user, String apiKey, int projectId) {
+    AC(URI uri, String token, int projectId) {
         this.uri = uri;
-        this.user = user;
-        this.apiKey = apiKey;
+        this.token = token;
         this.projectId = projectId;
 
         // add path to api.php to the given URI
@@ -86,11 +84,6 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     @Override
     public URI getUri() {
         return uri;
-    }
-
-    @Override
-    public String getUser() {
-        return user;
     }
 
     @Override
@@ -158,7 +151,6 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     public String toString() {
         return "AC{" +
                 "uri=" + uri +
-                ", user='" + user + '\'' +
                 ", projectId=" + projectId +
                 '}';
     }
@@ -184,7 +176,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     private JsonNode request(HttpRequestBase request, String pathInfo) throws IOException {
         final URI uri;
         try {
-            uri = new URI(apiUri.toString() + "?path_info=" + pathInfo);
+            uri = new URI(apiUri.toString() + "?token=" + token + "&path_info=" + pathInfo);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }

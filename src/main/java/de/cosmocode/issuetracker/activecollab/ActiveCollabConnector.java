@@ -31,11 +31,10 @@ import java.net.URI;
 public final class ActiveCollabConnector {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveCollabConnector.class);
 
-    public static ActiveCollab connectActiveCollab(URI uri, String user, String apiKey, int projectId) {
+    public static ActiveCollab connectActiveCollab(URI uri, String token, int projectId) {
         Preconditions.checkNotNull(uri, "URI");
-        Preconditions.checkNotNull(user, "User");
-        Preconditions.checkNotNull(apiKey, "ApiKey");
-        return new AC(uri, user, apiKey, projectId);
+        Preconditions.checkNotNull(token, "Token");
+        return new AC(uri, token, projectId);
     }
 
 }

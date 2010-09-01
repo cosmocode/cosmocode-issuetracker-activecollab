@@ -43,13 +43,6 @@ public interface ActiveCollab extends IssueTracker {
     URI getUri();
 
     /**
-     * ActiveCollab's user
-     *
-     * @return the used user
-     */
-    String getUser();
-
-    /**
      * ActiveCollab's project ID
      *
      * @return the user project id
