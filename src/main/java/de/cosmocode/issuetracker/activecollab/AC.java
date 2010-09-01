@@ -119,7 +119,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     }
 
     @Override
-    public Issue createIssue(String title, String description) throws IssueTrackerException {
+    public ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException {
         final String pathInfo = "";
         final Map<String,String> parameters = Maps.newHashMap();
 
@@ -131,7 +131,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     }
 
     @Override
-    public List<? extends Issue> listIssues() throws IssueTrackerException {
+    public Iterable<ActiveCollabIssue> listIssues() throws IssueTrackerException {
         final String pathInfo = "";
         final Map<String,String> parameters = Maps.newHashMap();
 
@@ -143,7 +143,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     }
 
     @Override
-    public Issue updateIssue(Issue issue) throws IssueTrackerException {
+    public ActiveCollabIssue updateIssue(Issue issue) throws IssueTrackerException {
         final String pathInfo = "";
         final Map<String,String> parameters = Maps.newHashMap();
 

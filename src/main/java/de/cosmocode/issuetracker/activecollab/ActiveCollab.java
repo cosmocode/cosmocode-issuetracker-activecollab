@@ -16,7 +16,9 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import de.cosmocode.issuetracker.Issue;
 import de.cosmocode.issuetracker.IssueTracker;
+import de.cosmocode.issuetracker.IssueTrackerException;
 
 import java.net.URI;
 
@@ -83,4 +85,30 @@ public interface ActiveCollab extends IssueTracker {
      */
     void setParentId(int parentId);
 
+    /**
+     * We officially support ActiveCollabIssues
+     *
+     * @return an ActiveCollabIssue
+     * @throws IssueTrackerException if something goes wrong
+     */
+    @Override
+    ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException;
+
+    /**
+     * We officially support ActiveCollabIssues
+     *
+     * @return a list of ActiveCollabIssue
+     * @throws IssueTrackerException if something goes wrong
+     */
+    @Override
+    Iterable<ActiveCollabIssue> listIssues() throws IssueTrackerException;
+
+    /**
+     * We officially support ActiveCollabIssues
+     *
+     * @return an ActiveCollabIssue
+     * @throws IssueTrackerException if something goes wrong
+     */
+    @Override
+    ActiveCollabIssue updateIssue(Issue issue) throws IssueTrackerException;
 }
