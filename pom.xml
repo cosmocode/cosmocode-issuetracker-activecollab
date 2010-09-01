@@ -40,6 +40,11 @@
             <artifactId>cosmocode-commons</artifactId>
             <version>[0.13.2,2)</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.5.6</version>
+        </dependency>
     </dependencies>
 
     <repositories>
