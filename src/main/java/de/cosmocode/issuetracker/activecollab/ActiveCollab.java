@@ -16,6 +16,7 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import com.google.common.base.Predicate;
 import de.cosmocode.issuetracker.Issue;
 import de.cosmocode.issuetracker.IssueTracker;
 import de.cosmocode.issuetracker.IssueTrackerException;
@@ -86,6 +87,16 @@ public interface ActiveCollab extends IssueTracker {
      */
     @Override
     ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException;
+
+    /**
+     * We officially support ActiveCollabIssues
+     *
+     * @return an ActiveCollabIssue
+     * @throws IssueTrackerException if something goes wrong
+     */
+    @Override
+    ActiveCollabIssue createIssue(String title, String description, Predicate<? super Issue> duplicationCheck)
+            throws IssueTrackerException;
 
     /**
      * We officially support ActiveCollabIssues

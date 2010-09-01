@@ -16,6 +16,7 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.cosmocode.issuetracker.AbstractIssueTracker;
@@ -121,6 +122,11 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         } catch (IOException e) {
             throw new StoringIssueFailed(e);
         }
+    }
+
+    @Override
+    public ActiveCollabIssue createIssue(String title, String description, Predicate<? super Issue> duplicationCheck) throws IssueTrackerException {
+        return ActiveCollabIssue.class.cast(super.createIssue(title, description, duplicationCheck));
     }
 
     @Override
