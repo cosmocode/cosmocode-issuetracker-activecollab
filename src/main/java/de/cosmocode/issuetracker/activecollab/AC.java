@@ -114,10 +114,12 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         this.parentId = parentId;
     }
 
+    @Override
     public int getVisibility() {
         return visibility;
     }
 
+    @Override
     public void setVisibility(int visibility) {
         this.visibility = visibility;
     }
@@ -139,7 +141,6 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         if (parentId != ActiveCollab.NOT_SET) {
             parameters.put("ticket[parent_id]", Integer.toString(parentId));
         }
-
 
         try {
             return parseTicket(requestPost(pathInfo, parameters));
@@ -170,6 +171,16 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         final Map<String,String> parameters = Maps.newHashMap();
         parameters.put("ticket[name]", issue.getTitle());
         parameters.put("ticket[body]", issue.getDescription());
+
+        if (issue.getVisibility() != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[visibility]", Integer.toString(issue.getVisibility()));
+        }
+        if (issue.getMilestoneId() != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[milestone_id]", Integer.toString(issue.getMilestoneId()));
+        }
+        if (issue.getParentId() != ActiveCollab.NOT_SET) {
+            parameters.put("ticket[parent_id]", Integer.toString(getParentId()));
+        }
 
         try {
             return parseTicket(requestPost(pathInfo, parameters));

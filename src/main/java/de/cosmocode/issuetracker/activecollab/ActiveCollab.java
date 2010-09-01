@@ -51,6 +51,20 @@ public interface ActiveCollab extends IssueTracker {
     int getProjectId();
 
     /**
+     * The new ticket's visibility.
+     *
+     * @return the visibility or {@link ActiveCollab#NOT_SET}
+     */
+    int getVisibility();
+
+    /**
+     * Sets the visibility for new tickets
+     *
+     * @param visibility the visibility for new tickets
+     */
+    void setVisibility(int visibility);
+
+    /**
      * The ticket's milestone. Used to create tickets in.
      *
      * @return the project's milestone ID or {@link ActiveCollab#NOT_SET}
