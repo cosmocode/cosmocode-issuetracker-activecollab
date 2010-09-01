@@ -16,6 +16,7 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,10 @@ public final class ActiveCollabConnector {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveCollabConnector.class);
 
     public static ActiveCollab connectActiveCollab(URI uri, String user, String apiKey, int projectId) {
-        AC ac = new AC(uri, user, apiKey, projectId);
-        return ac;
+        Preconditions.checkNotNull(uri, "URI");
+        Preconditions.checkNotNull(user, "User");
+        Preconditions.checkNotNull(apiKey, "ApiKey");
+        return new AC(uri, user, apiKey, projectId);
     }
 
 }
