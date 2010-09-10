@@ -236,7 +236,6 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         request.setURI(uri);
 
         request.setHeader("Accept", "application/json");
-        request.setHeader("Content-Type", "text/html; charset=utf-8");
 
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         String response = httpclient.execute(request, responseHandler);
