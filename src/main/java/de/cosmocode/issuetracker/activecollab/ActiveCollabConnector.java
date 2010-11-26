@@ -18,9 +18,6 @@ package de.cosmocode.issuetracker.activecollab;
 
 import java.net.URI;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 
 /**
