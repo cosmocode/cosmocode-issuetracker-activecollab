@@ -15,7 +15,7 @@
     <version>0.4-SNAPSHOT</version>
 
     <scm>
-        <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-issuetracker-activecollab/trunk</developerConnection>
+        <developerConnection>scm:git:git@github.com:cosmocode/${project.artifactId}.git</developerConnection>
     </scm>
 
     <dependencies>
