@@ -16,19 +16,19 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import org.codehaus.jackson.JsonNode;
+
 import de.cosmocode.issuetracker.IssueTracker;
 import de.cosmocode.issuetracker.IssueTrackerException;
-import org.codehaus.jackson.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
+ * Default {@link ActiveCollabIssue} implementation.
+ * 
  * @author Tobias Sarnowski
  */
-final class ACIssue implements ActiveCollabIssue {
-    private static final Logger LOG = LoggerFactory.getLogger(ACIssue.class);
+final class DefaultActiveCollabIssue implements ActiveCollabIssue {
 
-    private final AC ac;
+    private final DefaultActiveCollab ac;
     private String id;
     private String title;
     private String description;
@@ -36,25 +36,9 @@ final class ACIssue implements ActiveCollabIssue {
     private int milestoneId;
     private int parentId;
 
-    ACIssue(AC ac, JsonNode json) {
+    DefaultActiveCollabIssue(DefaultActiveCollab ac, JsonNode json) {
         this.ac = ac;
-
-        // {"id":56374,"type":"Ticket","name":"test","body":"testbla","state":3,"visibility":null,"created_on":"2010-09-01 13:50:01","created_by_id":170,"updated_on":null,"updated_by_id":null,"version":1,"permalink":"http://pt.cosmocode.de/public/index.php/projects/43/tickets/577","priority":null,"due_on":null,"completed_on":null,"completed_by_id":null,"tags":[],"project_id":43,"parent_id":null,"milestone_id":null,"permissions":{"can_edit":true,"can_delete":true,"can_change_visibility":true,"can_move":false,"can_copy":false,"can_change_complete_status":true},"ticket_id":577}
-
-        /*
-        java.lang.NullPointerException: null
-        at de.cosmocode.issuetracker.activecollab.ACIssue.<init>(ACIssue.java:45) ~[cosmocode-issuetracker-activecollab-0.1-SNAPSHOT.jar:na]
-        at de.cosmocode.issuetracker.activecollab.AC.parseTicket(AC.java:258) ~[cosmocode-issuetracker-activecollab-0.1-SNAPSHOT.jar:na]
-         */
-
-        id = Integer.toString(json.get("id").getIntValue());
-        /* TODO not working yet
-        title = json.get("name").toString();
-        description = json.get("body").toString();
-        visibility = json.get("visibility").getIntValue();
-        milestoneId = json.get("milestoneId").getIntValue();
-        parentId = json.get("parentId").getIntValue();
-        */
+        this.id = Integer.toString(json.get("id").getIntValue());
     }
 
     @Override
@@ -124,9 +108,7 @@ final class ACIssue implements ActiveCollabIssue {
 
     @Override
     public String toString() {
-        return "ACIssue{" +
-                "ac=" + ac +
-                ", id='" + id + '\'' +
-                '}';
+        return "ActiveCollabIssue [ac=" + ac + ", id=" + id + "]";
     }
+    
 }

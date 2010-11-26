@@ -16,25 +16,40 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
-import com.google.common.base.Preconditions;
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
+import com.google.common.base.Preconditions;
 
 /**
+ * Static access point for {@link ActiveCollab}.
+ * 
  * Based on:
  * http://www.activecollab.com/docs/manuals/developers/api/tickets
  *
  * @author Tobias Sarnowski
  */
 public final class ActiveCollabConnector {
-    private static final Logger LOG = LoggerFactory.getLogger(ActiveCollabConnector.class);
+    
+    private ActiveCollabConnector() {
+        
+    }
 
+    /**
+     * Connects to an ActiveCollab server.
+     *
+     * @since 1.0
+     * @param uri the uri to connect to
+     * @param token the api token
+     * @param projectId the project identifier
+     * @return an {@link ActiveCollab} instance
+     */
     public static ActiveCollab connectActiveCollab(URI uri, String token, int projectId) {
         Preconditions.checkNotNull(uri, "URI");
         Preconditions.checkNotNull(token, "Token");
-        return new AC(uri, token, projectId);
+        return new DefaultActiveCollab(uri, token, projectId);
     }
 
 }

@@ -19,43 +19,52 @@ package de.cosmocode.issuetracker.activecollab;
 import de.cosmocode.issuetracker.Issue;
 
 /**
+ * An extended {@link Issue} which provides additional
+ * information specific to ActiveCollab.
+ * 
  * @author Tobias Sarnowski
  */
 public interface ActiveCollabIssue extends Issue {
 
     /**
+     * Provides the visibility of this issue.
      *
-     * @return
+     * @return the visibility
      */
     int getVisibility();
 
     /**
+     * Changes the visibility of this issue.
      *
-     * @param visibility
+     * @param visibility the new visibility
      */
     void setVisibility(int visibility);
 
     /**
+     * Provides the milestone id of this issue.
      *
-     * @return
+     * @return the milestone id
      */
     int getMilestoneId();
 
     /**
+     * Changes the milestone id of this issue.
      *
-     * @param milestoneId
+     * @param milestoneId the new milestone id
      */
     void setMilestoneId(int milestoneId);
 
     /**
+     * Provides the parent id of this issue.
      *
-     * @return
+     * @return the parent id
      */
     int getParentId();
 
     /**
+     * Changes the parent id of this issue.
      *
-     * @param parentId
+     * @param parentId the new parent id
      */
     void setParentId(int parentId);
 

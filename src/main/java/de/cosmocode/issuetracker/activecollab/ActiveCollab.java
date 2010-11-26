@@ -16,35 +16,36 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
+import java.net.URI;
+
 import com.google.common.base.Predicate;
+
 import de.cosmocode.issuetracker.Issue;
 import de.cosmocode.issuetracker.IssueTracker;
 import de.cosmocode.issuetracker.IssueTrackerException;
 
-import java.net.URI;
-
 /**
- * Describes an active collab implementation of {@link IssueTracker}
+ * Describes an active collab implementation of {@link IssueTracker}.
  *
  * @author Tobias Sarnowski
  */
 public interface ActiveCollab extends IssueTracker {
 
     /**
-     * Symbolizes that an ID is not set
+     * Symbolizes that an ID is not set.
      */
-    public static final int NOT_SET = -1;
+    int NOT_SET = -1;
 
 
     /**
-     * ActiveCollab's home URI
+     * ActiveCollab's home URI.
      *
      * @return the used uri
      */
     URI getUri();
 
     /**
-     * ActiveCollab's project ID
+     * ActiveCollab's project ID.
      *
      * @return the user project id
      */
@@ -58,7 +59,7 @@ public interface ActiveCollab extends IssueTracker {
     int getVisibility();
 
     /**
-     * Sets the visibility for new tickets
+     * Sets the visibility for new tickets.
      *
      * @param visibility the visibility for new tickets
      */
@@ -72,7 +73,7 @@ public interface ActiveCollab extends IssueTracker {
     int getMilestoneId();
 
     /**
-     * Sets the milestone ID
+     * Sets the milestone ID.
      *
      * @param milestoneId the project's milestone ID
      */
@@ -87,15 +88,17 @@ public interface ActiveCollab extends IssueTracker {
     int getParentId();
 
     /**
-     * Sets the parent ID
+     * Sets the parent ID.
      *
      * @param parentId the project's parent ID
      */
     void setParentId(int parentId);
 
     /**
-     * We officially support ActiveCollabIssues
+     * We officially support ActiveCollabIssues.
      *
+     * @param title the issue's title
+     * @param description the issue's description
      * @return an ActiveCollabIssue
      * @throws IssueTrackerException if something goes wrong
      */
@@ -103,17 +106,20 @@ public interface ActiveCollab extends IssueTracker {
     ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException;
 
     /**
-     * We officially support ActiveCollabIssues
+     * We officially support ActiveCollabIssues.
      *
+     * @param title the issue's title
+     * @param description the issue's description
+     * @param duplicationCheck the predicate which checks for duplicates
      * @return an ActiveCollabIssue
      * @throws IssueTrackerException if something goes wrong
      */
     @Override
     ActiveCollabIssue createIssue(String title, String description, Predicate<? super Issue> duplicationCheck)
-            throws IssueTrackerException;
+        throws IssueTrackerException;
 
     /**
-     * We officially support ActiveCollabIssues
+     * We officially support ActiveCollabIssues.
      *
      * @return a list of ActiveCollabIssue
      * @throws IssueTrackerException if something goes wrong

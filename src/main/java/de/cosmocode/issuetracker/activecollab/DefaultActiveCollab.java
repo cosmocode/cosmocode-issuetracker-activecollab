@@ -16,13 +16,14 @@
 
 package de.cosmocode.issuetracker.activecollab;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import de.cosmocode.issuetracker.AbstractIssueTracker;
-import de.cosmocode.issuetracker.Issue;
-import de.cosmocode.issuetracker.IssueTrackerException;
-import de.cosmocode.issuetracker.StoringIssueFailed;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -35,22 +36,22 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import de.cosmocode.issuetracker.AbstractIssueTracker;
+import de.cosmocode.issuetracker.Issue;
+import de.cosmocode.issuetracker.IssueTrackerException;
+import de.cosmocode.issuetracker.StoringIssueFailed;
 
 /**
+ * Default {@link ActiveCollab} implementation.
+ * 
  * @author Tobias Sarnowski
  */
-final class AC extends AbstractIssueTracker implements ActiveCollab {
-    private static final Logger LOG = LoggerFactory.getLogger(AC.class);
+final class DefaultActiveCollab extends AbstractIssueTracker implements ActiveCollab {
 
     private final URI uri;
     private final URI apiUri;
@@ -63,7 +64,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     private final HttpClient httpclient;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    AC(URI uri, String token, int projectId) {
+    DefaultActiveCollab(URI uri, String token, int projectId) {
         this.uri = uri;
         this.token = token;
         this.projectId = projectId;
@@ -128,7 +129,7 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     public ActiveCollabIssue createIssue(String title, String description) throws IssueTrackerException {
         final String pathInfo = "/projects/" + projectId + "/tickets/add";
 
-        final Map<String,String> parameters = Maps.newHashMap();
+        final Map<String, String> parameters = Maps.newHashMap();
         parameters.put("ticket[name]", title);
         parameters.put("ticket[body]", description);
 
@@ -150,7 +151,8 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     }
 
     @Override
-    public ActiveCollabIssue createIssue(String title, String description, Predicate<? super Issue> duplicationCheck) throws IssueTrackerException {
+    public ActiveCollabIssue createIssue(String title, String description, Predicate<? super Issue> duplicationCheck) 
+        throws IssueTrackerException {
         return ActiveCollabIssue.class.cast(super.createIssue(title, description, duplicationCheck));
     }
 
@@ -165,10 +167,11 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         }
     }
 
+    @Override
     public ActiveCollabIssue updateIssue(ActiveCollabIssue issue) throws IssueTrackerException {
         final String pathInfo = "/projects/" + projectId + "/tickets/" + issue.getId() + "/edit";
 
-        final Map<String,String> parameters = Maps.newHashMap();
+        final Map<String, String> parameters = Maps.newHashMap();
         parameters.put("ticket[name]", issue.getTitle());
         parameters.put("ticket[body]", issue.getDescription());
 
@@ -200,25 +203,16 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
         }
     }
 
-    @Override
-    public String toString() {
-        return "AC{" +
-                "uri=" + uri +
-                ", projectId=" + projectId +
-                '}';
-    }
-
     private JsonNode requestGet(String pathInfo) throws IOException {
-        HttpGet get = new HttpGet();
-        return request(get, pathInfo);
+        return request(new HttpGet(), pathInfo);
     }
 
-    private JsonNode requestPost(String pathInfo, Map<String,String> parameters) throws IOException {
-        HttpPost post = new HttpPost();
+    private JsonNode requestPost(String pathInfo, Map<String, String> parameters) throws IOException {
+        final HttpPost post = new HttpPost();
 
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(parameters.size() + 1);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(parameters.size() + 1);
         nameValuePairs.add(new BasicNameValuePair("submitted", "submitted"));
-        for (Map.Entry<String,String> entry: parameters.entrySet()) {
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
             nameValuePairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -227,34 +221,40 @@ final class AC extends AbstractIssueTracker implements ActiveCollab {
     }
 
     private JsonNode request(HttpRequestBase request, String pathInfo) throws IOException {
-        final URI uri;
+        final URI requestUri;
         try {
-            uri = new URI(apiUri.toString() + "?token=" + token + "&path_info=" + pathInfo);
+            requestUri = new URI(apiUri.toString() + "?token=" + token + "&path_info=" + pathInfo);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
-        request.setURI(uri);
+        request.setURI(requestUri);
 
         request.setHeader("Accept", "application/json");
 
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        String response = httpclient.execute(request, responseHandler);
+        final ResponseHandler<String> responseHandler = new BasicResponseHandler();
+        final String response = httpclient.execute(request, responseHandler);
 
         return mapper.readValue(response, JsonNode.class);
     }
 
     private List<ActiveCollabIssue> parseTickets(JsonNode json) {
-        List<ActiveCollabIssue> issues = Lists.newArrayList();
+        final List<ActiveCollabIssue> issues = Lists.newArrayList();
 
-        Iterator<JsonNode> nodes = json.getElements();
+        final Iterator<JsonNode> nodes = json.getElements();
         while (nodes.hasNext()) {
-            issues.add(new ACIssue(this, nodes.next()));
+            issues.add(new DefaultActiveCollabIssue(this, nodes.next()));
         }
 
         return issues;
     }
 
     private ActiveCollabIssue parseTicket(JsonNode json) {
-        return new ACIssue(this, json);
+        return new DefaultActiveCollabIssue(this, json);
     }
+
+    @Override
+    public String toString() {
+        return "ActiveCollab [uri=" + uri + ", projectId=" + projectId + "]";
+    }
+    
 }
